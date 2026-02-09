@@ -1,66 +1,88 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Avito Bot & Email Campaign System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Автоматизированный бот для управления объявлениями на Avito и email-рассылок.
 
-## About Laravel
+## Технологический стек
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Backend**: Python 3.11 + FastAPI
+- **Frontend**: Vue.js 3 + Vite
+- **База данных**: PostgreSQL 15
+- **Кеш/Очереди**: Redis 7 + Celery
+- **Контейнеризация**: Docker + Docker Compose
+- **Веб-сервер**: Nginx (reverse proxy)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Быстрый старт
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```bash
+# Клонировать репозиторий
+git clone <repo-url>
+cd laravel-docker-project
 
-## Learning Laravel
+# Скопировать конфигурацию
+cp .env.example .env
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+# Запустить все сервисы
+docker-compose up -d --build
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+# Применить миграции БД
+docker-compose exec backend alembic upgrade head
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Приложение будет доступно:
+- **Frontend**: http://localhost
+- **API**: http://localhost/api/v1
+- **API Docs (Swagger)**: http://localhost/api/docs
 
-## Laravel Sponsors
+## Структура проекта
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```
+├── backend/              # FastAPI приложение
+│   ├── app/
+│   │   ├── api/v1/       # API эндпоинты
+│   │   ├── core/         # Конфигурация, безопасность
+│   │   ├── models/       # SQLAlchemy модели
+│   │   ├── schemas/      # Pydantic схемы
+│   │   ├── services/     # Бизнес-логика
+│   │   └── tasks/        # Celery задачи
+│   ├── alembic/          # Миграции БД
+│   └── tests/            # Юнит-тесты
+├── frontend/             # Vue.js приложение
+│   └── src/
+│       ├── components/   # UI компоненты
+│       ├── views/        # Страницы
+│       ├── router/       # Маршрутизация
+│       └── store/        # Pinia хранилище
+├── nginx/                # Конфигурация Nginx
+└── docker-compose.yml
+```
 
-### Premium Partners
+## Основные функции
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### Avito (через официальное API)
+- Публикация и управление объявлениями
+- Сбор аналитики (просмотры, избранное, контакты)
+- Мониторинг конкурентов
+- Автоответы на сообщения
 
-## Contributing
+### Email-рассылки
+- Импорт контактов из CSV/Excel
+- Визуальный редактор шаблонов
+- Персонализация и сегментация
+- A/B-тестирование
+- Аналитика (открытия, клики, отписки)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### CRM
+- База контактов с историей взаимодействий
+- Сегменты по интересам, географии
+- Импорт/экспорт CSV/Excel
 
-## Code of Conduct
+## API Документация
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+После запуска доступна по адресу http://localhost/api/docs (Swagger UI).
 
-## Security Vulnerabilities
+## Тестирование
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+docker-compose exec backend pytest
+docker-compose exec backend pytest --cov=app
+```
