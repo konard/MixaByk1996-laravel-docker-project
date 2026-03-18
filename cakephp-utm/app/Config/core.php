@@ -19,3 +19,19 @@ Configure::write('Session', array(
     'defaults' => 'php',
 ));
 Configure::write('Cache.disable', true);
+
+Cache::config('_cake_core_', array(
+    'engine' => 'File',
+    'prefix' => 'cake_core_',
+    'path' => CACHE . 'persistent' . DS,
+    'serialize' => true,
+    'duration' => '+999 days',
+));
+
+Cache::config('_cake_model_', array(
+    'engine' => 'File',
+    'prefix' => 'cake_model_',
+    'path' => CACHE . 'models' . DS,
+    'serialize' => true,
+    'duration' => '+999 days',
+));
